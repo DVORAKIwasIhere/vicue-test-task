@@ -12,7 +12,8 @@ $search-bar-height: 35px;
 }
 
 .card {
-  height: 375px;
+  min-height: 350px;
+  max-height: 425px;
   padding: 20px;
   min-width: 100px;
   max-width: 300px;
@@ -23,6 +24,10 @@ $search-bar-height: 35px;
   background-color: rgba(darkgray, 0.75);
   margin: 0;
   color: #000;
+  transition: all 0.3s ease-out;
+  &:hover {
+    background-color: rgba(grey, 0.5);
+  }
 
   @media (max-width: 1700px) {
     flex-basis: 23%;
@@ -84,13 +89,16 @@ $search-bar-height: 35px;
   background-position: 97% center;
   background-color: white;
   outline: 0;
-  padding-right: 38px;
+  padding-right: 38px;  
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .cards-collection {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch;
   flex-wrap: wrap;
   gap: 20px;
 }
@@ -125,8 +133,8 @@ $search-bar-height: 35px;
 
   @media (max-width: 679px) {
     padding: 12px;
-    width: $search-bar-height / 2;
-    height: $search-bar-height / 2;
+    width: calc($search-bar-height / 2);
+    height: calc($search-bar-height / 2);
   }
 
   &[disabled] {

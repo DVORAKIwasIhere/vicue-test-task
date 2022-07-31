@@ -13,15 +13,13 @@ export const Home = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [counterPage, setCounterPage] = useState(1);
-  const [perPage, setPerPage] = useState(25);
+  const [perPage] = useState(25);
   const [searchField, setSearchField] = useState("");
 
   const [searchValue] = useDebounce(searchField, 500);
 
   useLayoutEffect(() => {
     const findEndPage = async (page: number) => {
-      setLoading(true);
-
       if (!searchField) {
         const res = await axios.get(
           `https://api.punkapi.com/v2/beers?page=${page}&per_page=${perPage}`
@@ -31,7 +29,6 @@ export const Home = () => {
           return;
         }
         setCounterPage(page - 1);
-        setLoading(false);
       } else {
         const res = await axios.get(
           `https://api.punkapi.com/v2/beers?beer_name=${searchValue}&page=${page}&per_page=${perPage}`
@@ -41,7 +38,6 @@ export const Home = () => {
           return;
         }
         setCounterPage(page - 1);
-        setLoading(false);
       }
     };
     findEndPage(1);
@@ -91,64 +87,68 @@ export const Home = () => {
         <SearchBar value={searchField} onChange={handleChangeSearchBar} />
       </Header>
       <div className="container">
-        {!!brew.length && (<div className="page-selector-wrapper">
-          <button
-            className="page-selector"
-            onClick={() => handlePage(1)}
-            disabled={page === 1}
-          >
-            {"<<"}
-          </button>
-          <button
-            className="page-selector"
-            onClick={() => handlePage(page - 1)}
-            disabled={page - 1 < 1}
-          >
-            {"<"}
-          </button>
-          {page > 1 && (
+        {!!brew.length && (
+          <div className="page-selector-wrapper">
+            <button
+              className="page-selector"
+              onClick={() => handlePage(1)}
+              disabled={page === 1}
+            >
+              {"<<"}
+            </button>
             <button
               className="page-selector"
               onClick={() => handlePage(page - 1)}
+              disabled={page - 1 < 1}
             >
-              {page - 1}
+              {"<"}
             </button>
-          )}
-          <button className="page-selector" disabled>
-            {page}
-          </button>
-          {page < counterPage && (
+            {page > 1 && (
+              <button
+                className="page-selector"
+                onClick={() => handlePage(page - 1)}
+              >
+                {page - 1}
+              </button>
+            )}
+            <button className="page-selector" disabled>
+              {page}
+            </button>
+            {page < counterPage && (
+              <button
+                className="page-selector"
+                onClick={() => handlePage(page + 1)}
+              >
+                {page + 1}
+              </button>
+            )}
             <button
               className="page-selector"
               onClick={() => handlePage(page + 1)}
+              disabled={page + 1 > counterPage}
             >
-              {page + 1}
+              {">"}
             </button>
-          )}
-          <button
-            className="page-selector"
-            onClick={() => handlePage(page + 1)}
-            disabled={page + 1 > counterPage}
-          >
-            {">"}
-          </button>
-          <button
-            className="page-selector"
-            onClick={() => handlePage(counterPage)}
-            disabled={page === counterPage}
-          >
-            {">>"}
-          </button>
-        </div>)}
+            <button
+              className="page-selector"
+              onClick={() => handlePage(counterPage)}
+              disabled={page === counterPage}
+            >
+              {">>"}
+            </button>
+          </div>
+        )}
         <div className="cards-collection">
           {currentBrew.map((row) => (
             <div key={row.id} className="card">
               <Link to={`/brew/${row.id}`} className="link">
                 <div className="card-img-wrapper">
-                  <img src={row.image_url} />
+                  <img src={row.image_url} alt=""/>
                 </div>
                 <h2 className="card-title">{row.name}</h2>
-                <p className="card-description">{row.description.substring(0, 140) + "..."}</p>
+                <p className="card-description">
+                  {row.description.substring(0, 140) + "..."}
+                </p>
               </Link>
             </div>
           ))}
