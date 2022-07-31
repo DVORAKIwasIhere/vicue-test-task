@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/vicue-test-task/static/css/main.59128489.css",
+    "main.js": "/vicue-test-task/static/js/main.4254df52.js",
+    "index.html": "/vicue-test-task/index.html",
+    "static/media/search_icon.svg": "/vicue-test-task/static/media/search_icon.4880e187e651a0202cbc.svg",
+    "main.59128489.css.map": "/vicue-test-task/static/css/main.59128489.css.map",
+    "main.4254df52.js.map": "/vicue-test-task/static/js/main.4254df52.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.59128489.css",
+    "static/js/main.4254df52.js"
+  ]
+}
