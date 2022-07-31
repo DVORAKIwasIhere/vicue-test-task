@@ -5,6 +5,9 @@ import { useDebounce } from "use-debounce";
 import { SearchBar } from "../../components/SearchBar";
 import { IBrew } from "../../interfaces/Interfaces";
 
+import "./styles.scss";
+import { Header } from "../../components/Header";
+
 export const Home = () => {
   const [brew, setBrew] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -76,34 +79,81 @@ export const Home = () => {
 
   const handlePage = (page: number) => {
     setPage(page);
-    console.log(page);
   };
-
-
 
   const handleChangeSearchBar = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchField(e.target.value);
   };
 
   return (
-    <div>
-      <button onClick={() => setPerPage(35)}>35</button>
-      <SearchBar value={searchField} onChange={handleChangeSearchBar} />
-      {[...Array(counterPage)].map((_, index) => (
-        <button onClick={() => handlePage(index + 1)} key={index}>
-          {index + 1}
-        </button>
-      ))}
-      {currentBrew.map((row) => (
-        
-        <div key={row.id}>
-            <Link to={`/brew/${row.id}`} className="link">
-          <span>{row.id}</span>
-          
-          <span>{row.description.substring(0, 140)+"..."}</span>
-          </Link>
+    <>
+      <Header>
+        <SearchBar value={searchField} onChange={handleChangeSearchBar} />
+      </Header>
+      <div className="container">
+        {!!brew.length && (<div className="page-selector-wrapper">
+          <button
+            className="page-selector"
+            onClick={() => handlePage(1)}
+            disabled={page === 1}
+          >
+            {"<<"}
+          </button>
+          <button
+            className="page-selector"
+            onClick={() => handlePage(page - 1)}
+            disabled={page - 1 < 1}
+          >
+            {"<"}
+          </button>
+          {page > 1 && (
+            <button
+              className="page-selector"
+              onClick={() => handlePage(page - 1)}
+            >
+              {page - 1}
+            </button>
+          )}
+          <button className="page-selector" disabled>
+            {page}
+          </button>
+          {page < counterPage && (
+            <button
+              className="page-selector"
+              onClick={() => handlePage(page + 1)}
+            >
+              {page + 1}
+            </button>
+          )}
+          <button
+            className="page-selector"
+            onClick={() => handlePage(page + 1)}
+            disabled={page + 1 > counterPage}
+          >
+            {">"}
+          </button>
+          <button
+            className="page-selector"
+            onClick={() => handlePage(counterPage)}
+            disabled={page === counterPage}
+          >
+            {">>"}
+          </button>
+        </div>)}
+        <div className="cards-collection">
+          {currentBrew.map((row) => (
+            <div key={row.id} className="card">
+              <Link to={`/brew/${row.id}`} className="link">
+                <div className="card-img-wrapper">
+                  <img src={row.image_url} />
+                </div>
+                <h2 className="card-title">{row.name}</h2>
+                <p className="card-description">{row.description.substring(0, 140) + "..."}</p>
+              </Link>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    </>
   );
 };

@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Brew } from './pages/Brew';
 import { Home } from './pages/Home';
 
+import './styles.scss';
 
 function App() {
   return (
